@@ -22,7 +22,6 @@ function Signinn() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Start loading
         try {
             dispatch(signInStart());
             const res = await fetch('/api/auth/signin', {
@@ -41,10 +40,14 @@ function Signinn() {
             return
            }
             dispatch(sigInSuccess(data))
+            alert("Sign in Succesfull !");
             navigate('/Home'); // Navigate on success
             console.log("navigated to home ")
         } catch (error) {
-            setError('Invalid Creditinals ' ); // Set error message
+            setError('Invalid Creditinals ' ); 
+            alert("Sign in unSuccesfull inavlid password or username!")
+
+            // Set error message
         } finally {
             setIsLoading(false); // Stop loading regardless of the outcome
         }

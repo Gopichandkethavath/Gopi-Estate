@@ -2,7 +2,7 @@ import bcryptjs from  'bcryptjs';
 import User from '../models/user.model.js';
 export const updateUser=async (req,res,next)=>
 {
-    if (req.user.id !== req.params.id) {
+    if (req.user.id != req.params.id) {
         return res.status(403).json({ message: "You are not authorized to update this user's information." });
     }
 try {
@@ -36,3 +36,24 @@ res.status(200).json(rest);
     
 }
 };
+export const deleteUser=async(req,res,next)=>
+{
+    if(req.user.id!=req.params.id)
+    {
+        return res.status(401).json({"message":"you can delete your own account"});
+    }
+   try {
+    await User.findByIdAndDelete(req.params.id);
+    res.clearCookie('access_token');
+     res.status(200).json({  "message":"user has been deleted"});
+    
+
+
+    
+   } catch (error) {
+    console.error(error.message)
+    
+   }
+
+
+}

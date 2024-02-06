@@ -1,23 +1,31 @@
 import User from "../models/user.model.js";
 import bcryptjs from 'bcryptjs';
 import jwt from  'jsonwebtoken'
-export const signup=async(req,res,next)=>{
-    const {username,email,password}=req.body;
-    const salt=await bcryptjs.hash(password,10);
+export const signup = async (req, res, next) => {
+    const { username, email, password } = req.body;
 
-const newuser=new User({username,email,password:salt});
-try {
-    await newuser.save();
-res.status(201).json("user created ");
-    
-} catch (error) {
-    next(error);
-    
-}
+    try {
+        // Check for existing user
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(409).json("User already exists with that email.");
+        }
 
+        // Hash password
+        const salt = await bcryptjs.hash(password, 10);
 
+        // Create and save new user
+        const newUser = new User({ username, email, password: salt });
+        await newUser.save();
 
+        res.status(201).json("User created successfully.");
+    } catch (error) {
+        next(error);
+    }
 };
+
+
+
 export const signin=async(req,res,next)=>{
     const {email,password}=req.body;
     try
@@ -37,6 +45,17 @@ export const signin=async(req,res,next)=>{
  catch (error) {
     next(error);
 }
+}
+export const signout=async(req,res,next)=>
+{
+    try {
+        res.clearCookie(access_token);
+    res.status(200).json('user logged out');
+    } catch (error) {
+        next(error)
+        
+    }
+    
 }
 export const google=  async(req,res,next)=>
 { 

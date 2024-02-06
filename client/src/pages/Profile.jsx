@@ -3,14 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import {useRef} from 'react'
 import {ref,getStorage, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
 import { app } from '../firebase.js';
-import { updateSuccess,updateStart,updateFailure } from '../redux/user/userSlice.js';
+import { updateSuccess,updateStart,updateFailure,deletefailure,deletestart,deletesuccess
+  ,signoutfailure,signoutstart,signoutsuccess
+ } from '../redux/user/userSlice.js';
+import { useNavigate } from 'react-router-dom';
+import { disconnect } from 'mongoose';
 function Profile() {
   const fileref=useRef(null);
   const {currentUser}=useSelector(state=>state.user);
  const [file,setFile]=useState(undefined);
  const [progress,setprogress]=useState(0);
  const [formData,setFormData]=useState({});
+
  const dispatch=useDispatch();
+ const navigate=useNavigate();
 
  const [uploaderror,setuploaderror]=useState(false);
  
@@ -94,6 +100,54 @@ function Profile() {
     };
     
   }
+  const handledelete=async(e)=>
+  {
+    alert("are you sure to delete your account")
+try {
+  dispatch(deletestart());
+  const res=await fetch(`/api/user/delete/${currentUser._id}`,
+  {
+    method:"DELETE",
+    headers:{"Content-Type" : "Application/JSON"},
+    
+
+  })
+  const  data=await res.json();
+  if(data.succes==false)
+  {
+    dispatch(deletefailure(data.message))
+return;
+  }
+  dispatch(deletesuccess(data))
+  navigate("/signinn");
+  
+} 
+catch (error)
+{
+  console.log('error',error)
+ 
+  
+}
+   
+
+  }
+  const handlesignout=async()=>
+  {
+    try {
+      dispatch(signoutstart())
+      const res=await fetch('api/auth/signout');
+      const data= await res.json();
+      if(data.success==false)
+      {
+        dispatch(signoutfailure())
+        return
+      }   
+      dispatch(signoutsuccess())
+      dispatch(sign)   
+    } catch (error) {
+      
+    }
+  }
   return (
     <div className='max-w-lg mx-auto'>
     <h1 className='text-semi-bold text-white text-3xl text-center mt-3'>Profile</h1>
@@ -121,8 +175,8 @@ function Profile() {
     <button className='text-black bg-green-600 hover:opacity-90 p-3 uppercase rounded-lg border'>Update</button>
     </form>
   <div className='mt-4 justify-between flex'>
-    <span className='text-red-600 cursor-pointer'>Delete account</span>
-    <span className='text-red-600 cursor-pointer'>sign out</span>
+    <span onClick={handledelete}  className='text-red-600 cursor-pointer'>Delete account</span>
+    <span onClick={handlesignout} className='text-red-600 cursor-pointer'>sign out</span>
     </div>
     </div>
   )

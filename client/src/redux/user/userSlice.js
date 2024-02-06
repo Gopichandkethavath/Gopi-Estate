@@ -41,12 +41,47 @@ const userSlice=createSlice({
             
             state.error=action.payload;
             state.loading=false;
+        },
+        deletestart:(state)=>
+        {
+            state.loading='true';
+        },
+        deletesuccess:(state,action)=>
+        {
+            state.currentUser=action.payload;
+            state.error=null;
+            state.loading=false; 
+        },
+        deletefailure:(state,action)=>
+        {
+            
+            state.error=action.payload;
+            state.loading=false;
+        },
+        
+        signoutstart:(state)=>
+        {
+            state.loading='true';
+        },
+        signoutsuccess:(state,action)=>
+        {
+            state.currentUser=action.payload;
+            state.error=null;
+            state.loading=false; 
+        },
+        signoutfailure:(state,action)=>
+        {
+            
+            state.error=action.payload;
+            state.loading=false;
         }
 
 }
 })
 export const {sigInSuccess,signInFailure,signInStart
     ,updateStart,updateFailure,updateSuccess
+    ,deletestart,deletefailure,deletesuccess
+    ,signoutfailure,signoutstart,signoutsuccess
 }=userSlice.actions;
 
 

@@ -8,14 +8,14 @@ export const verifyUser=(req,res,next)=>
 
     }
    
- jwt.verify(token,process.env.JWT_SECRET,(error,decoded)=>
+ jwt.verify(token,process.env.JWT_SECRET,(error,user)=>
 {
     if(error) 
     {
         return res.status(403).json({ auth: false, message: "Failed to authenticate token." });
 
     }
-    req.user=decoded;
+    req.user=user;
      next();
  });
 
