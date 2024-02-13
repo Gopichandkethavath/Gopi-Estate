@@ -5,6 +5,8 @@ import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.route.js"
 import cookieParser  from "cookie-parser";
 import Userrouter from "./routes/user.routes.js";
+import listingRouter from  "./routes/listing.route.js";
+
 
 //server created first in backend
 const app=express();
@@ -29,6 +31,7 @@ app.use(cookieParser());
 app.use('/api',userRouter);
 app.use('/api/auth',authRouter);
 app.use('/api/user',Userrouter)
+app.use('/api/listing',listingRouter);
 app.use((err,req,res,next)=>
 {
     const Statuscode=err.Statuscode || 500;

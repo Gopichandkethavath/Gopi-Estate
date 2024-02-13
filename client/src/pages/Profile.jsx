@@ -120,6 +120,7 @@ return;
   }
   dispatch(deletesuccess(data))
   navigate("/signinn");
+  data.currentUser=null;
   
 } 
 catch (error)
@@ -173,7 +174,10 @@ catch (error)
     <input type="email" placeholder='email' id='email' onChange={handlechange} defaultValue={currentUser.email} className='p-3 border rounded-lg' />
     <input type="password" placeholder='password'  onChange={handlechange}   id='password'  className='p-3 border rounded-lg'/>
     <button className='text-black bg-green-600 hover:opacity-90 p-3 uppercase rounded-lg border'>Update</button>
+    <button className='text-black bg-red-500 hover:opacity-90 p-3 uppercase rounded-lg border'>create Listing</button>
+
     </form>
+
   <div className='mt-4 justify-between flex'>
     <span onClick={handledelete}  className='text-red-600 cursor-pointer'>Delete account</span>
     <span onClick={handlesignout} className='text-red-600 cursor-pointer'>sign out</span>

@@ -48,7 +48,7 @@ const userSlice=createSlice({
         },
         deletesuccess:(state,action)=>
         {
-            state.currentUser=action.payload;
+            state.currentUser=null;
             state.error=null;
             state.loading=false; 
         },
